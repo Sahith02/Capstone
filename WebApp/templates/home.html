@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Video Colorizer</title>
+	</head>
+	
+	<body>
+
+		<lottie-player id="lottieBgTopRight" src="https://assets4.lottiefiles.com/packages/lf20_82i2etnb.json"  background="transparent"  speed="1.5" loop autoplay></lottie-player>
+		<lottie-player id="lottieBgBottomLeft" src="https://assets9.lottiefiles.com/packages/lf20_sds9ilws.json"  background="transparent"  speed="1.5" loop autoplay></lottie-player>
+
+		<h1 id="headerText">Video Colorizer</h1>
+
+		<div id="mainBox">
+
+			<!-- ProgressList Tracker v2 -->
+			<ol class="progressList" data-steps="4">
+				<li class="">
+					<span class="name">1. Upload</span>
+				</li>
+				<li class="">
+					<span class="name">2. Split Frames</span>
+				</li>
+				<li class="">
+					<span class="name">3. Process</span>
+				</li>
+				<li class="active">
+					<span class="name">4. Merge</span>
+				</li>
+			</ol>
+
+			<p>Hello there!</p>
+			<button type="button" class="btn btn-info">Primary</button>
+		</div>
+
+
+		<style type="text/css">
+			* {
+				margin: 0px;
+				padding: 0px;
+				box-sizing: border-box;
+			}
+			body{
+				margin: 0px;
+			}
+			#lottieBgTopRight{
+				position: absolute;
+				top: 0px;
+				right: 0px;
+				float: right;
+				height: 324px;
+				width: 576px;
+				z-index: -999;
+			}
+			#lottieBgBottomLeft{
+				position: absolute;
+				bottom: 0px;
+				left: 0px;
+				float: right;
+				height: 324px;
+				width: 576px;
+				z-index: -999;
+			}
+			#headerText{
+				text-align: center;
+				font-weight: bold;
+			}
+			#mainBox{
+				margin: auto;
+				border-radius: 15px;
+				background: #fff;
+				margin-top: 5%;
+				width: 60vw;
+				height: 60vh;
+				box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+				padding: 20px;
+			}
+			/* ProgressList Tracker v2 */
+			ol.progressList[data-steps="2"] li { width: 49%; }
+			ol.progressList[data-steps="3"] li { width: 33%; }
+			ol.progressList[data-steps="4"] li { width: 24%; }
+			ol.progressList[data-steps="5"] li { width: 19%; }
+			ol.progressList[data-steps="6"] li { width: 16%; }
+			ol.progressList[data-steps="7"] li { width: 14%; }
+			ol.progressList[data-steps="8"] li { width: 12%; }
+			ol.progressList[data-steps="9"] li { width: 11%; }
+
+			.progressList {
+			    width: 100%;
+			    list-style: none;
+			    margin: 20px 0 20px 0;
+			    height: 40px;
+			    background-color: #eee;
+			}
+
+			.progressList li {
+			    float: left;
+			    text-align: center;
+			    position: relative;
+			    margin-top: 10px;
+			}
+
+			.name {
+			    color: black;
+			    opacity: 0.3;
+			    font-size: 16px;
+			}
+
+			.progressList .active .name{
+			    opacity: 1;
+			    font-weight: bold;
+			    font-size: 16px;
+			}
+
+		</style>
+
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+		<script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+	</body>
+</html>
