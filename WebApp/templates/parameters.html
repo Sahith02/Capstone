@@ -32,18 +32,18 @@
 				</li>
 			</ol>
 
-			<p>Please wait while frames are being extracted...</p>
+			<p>Choose the parameters to be applied to the video below.</p>
 
-			<div class="progress">
+			<!-- <div class="progress">
 				<div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
 					<span class="progress-bar-label">0%</span>
 				</div>
 			</div>
 
-			<br>
+			<br> -->
 
 			<button type="button" class="btn btn-danger" id="backButton" onclick="window.location.href='{{url_for('home')}}';"> ᐸ Upload a different video</button>
-			<button type="button" class="btn btn-info" id="nextButton" disabled="true" onclick="window.location.href='{{url_for('parameters')}}';">{{next_button_text}} ᐳ</button>
+			<button type="button" class="btn btn-info" id="nextButton" onclick="window.location.href='{{url_for('process_frames')}}';">{{next_button_text}} ᐳ</button>
 		</div>
 
 
@@ -138,7 +138,7 @@
 
 		</style>
 
-		<script>
+		<!-- <script>
 
 		var source = new EventSource("/progress_split_frames");
 		source.onmessage = function(event) {
@@ -152,7 +152,7 @@
 				source.close()
 			}
 		}
-		</script>
+		</script> -->
 
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>

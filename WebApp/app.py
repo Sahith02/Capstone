@@ -12,15 +12,23 @@ def home():
 
 @app.route('/split_frames')
 def split_frames():
-	return render_template("split_frames.html", step_2 = "active", next_button_text = "Next")
+	return render_template("split_frames.html", step_2 = "active", next_button_text = "Choose parameters")
+
+@app.route('/parameters')
+def parameters():
+	return render_template("parameters.html", step_3 = "active", next_button_text = "Process frames")
 
 @app.route('/process_frames')
 def process_frames():
-	return render_template("process_frames.html", step_3 = "active", next_button_text = "Next")
+	return render_template("process_frames.html", step_4 = "active", next_button_text = "Next")
 
 @app.route('/merge_frames')
 def merge_frames():
-	return render_template("merge_frames.html", step_4 = "active", next_button_text = "Finish")
+	return render_template("merge_frames.html", step_5 = "active", next_button_text = "Finish and Save")
+
+@app.route('/save_video')
+def save_video():
+	return render_template("save_video.html", step_5 = "active", next_button_text = "Save Video")
 
 
 @app.route('/progress_split_frames')
