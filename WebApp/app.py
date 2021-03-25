@@ -8,11 +8,11 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 @app.route('/')
 def hello():
-	return render_template("upload_video.html", step_1 = "active", next_button_text = "Upload")
+	return render_template("home.html", step_1 = "active", next_button_text = "Upload")
 
-@app.route('/upload_video')
+@app.route('/split_frames')
 def upload_video():
-	return render_template("home.html", step_1 = "active", next_button_text = "Next")
+	return render_template("split_frames.html", step_2 = "active", next_button_text = "Next")
 
 @app.route('/progress_split_frames')
 def progress():

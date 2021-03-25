@@ -29,31 +29,17 @@
 				</li>
 			</ol>
 
-			<p id="stepsProcessText">
-				<br>
-				<b> Steps of the process: </b> <br>
-				1. Choose a video to upload below. <br>
-				2. Video gets split into frames. <br>
-				3. Colorization is applied to all frames. <br>
-				4. Frames are merged together with custom damping. <br>
-				<br>
-			</p>
+			<p>Please wait while frames are being extracted...</p>
 
-			<hr>
-
-			<label class="custom-file-upload">
-				<input type="file" accept="video/*" style="display: none;" />
-				<i class="fa fa-cloud-upload"></i> Select Video
-			</label>
-
-			<!-- <div class="progress">
+			<div class="progress">
 				<div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
 					<span class="progress-bar-label">0%</span>
 				</div>
 			</div>
 
-			<br> -->
+			<br>
 
+			<button type="button" class="btn btn-danger" id="backButton"> ᐸ Upload a different video</button>
 			<button type="button" class="btn btn-info" id="nextButton">{{next_button_text}} ᐳ</button>
 		</div>
 
@@ -105,15 +91,7 @@
 				right: 20px;
 				bottom: 20px;
 			}
-			#stepsProcessText{
-				font-size: 15px;
-			}
-			.custom-file-upload {
-				border: 1px solid #ccc;
-				display: inline-block;
-				padding: 20px 30px;
-				cursor: pointer;
-				font-size: 16px;
+			#backButton{
 				position: absolute;
 				left: 20px;
 				bottom: 20px;
@@ -157,7 +135,7 @@
 
 		</style>
 
-<!-- 		<script>
+		<script>
 
 		var source = new EventSource("/progress_split_frames");
 		source.onmessage = function(event) {
@@ -171,9 +149,8 @@
 			}
 		}
 		</script>
- -->
+
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 		<script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
