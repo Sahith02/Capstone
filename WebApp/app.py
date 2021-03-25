@@ -7,12 +7,21 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 
 @app.route('/')
-def hello():
+def home():
 	return render_template("home.html", step_1 = "active", next_button_text = "Upload")
 
 @app.route('/split_frames')
-def upload_video():
+def split_frames():
 	return render_template("split_frames.html", step_2 = "active", next_button_text = "Next")
+
+@app.route('/process_frames')
+def process_frames():
+	return render_template("process_frames.html", step_3 = "active", next_button_text = "Next")
+
+@app.route('/merge_frames')
+def merge_frames():
+	return render_template("merge_frames.html", step_4 = "active", next_button_text = "Finish")
+
 
 @app.route('/progress_split_frames')
 def progress():
@@ -22,7 +31,7 @@ def progress():
 		while x <= 100:
 			yield "data:" + str(x) + "\n\n"
 			x = x + 1
-			time.sleep(0.1)
+			time.sleep(0.01)
 
 	return Response(generate(), mimetype = "text/event-stream")
 

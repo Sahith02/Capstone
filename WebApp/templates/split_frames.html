@@ -39,8 +39,8 @@
 
 			<br>
 
-			<button type="button" class="btn btn-danger" id="backButton"> ᐸ Upload a different video</button>
-			<button type="button" class="btn btn-info" id="nextButton">{{next_button_text}} ᐳ</button>
+			<button type="button" class="btn btn-danger" id="backButton" onclick="window.location.href='{{url_for('home')}}';"> ᐸ Upload a different video</button>
+			<button type="button" class="btn btn-info" id="nextButton" disabled="true" onclick="window.location.href='{{url_for('process_frames')}}';">{{next_button_text}} ᐳ</button>
 		</div>
 
 
@@ -145,6 +145,7 @@
 			if(event.data >= 100){
 				$('.progress-bar').css('width', '100%').attr('aria-valuenow', 100);
 				$('.progress-bar-label').text('100%');
+				$('#nextButton').prop('disabled', false);
 				source.close()
 			}
 		}
