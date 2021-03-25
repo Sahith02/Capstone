@@ -6,7 +6,7 @@ app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 
-@app.route('/')
+@app.route('/', methods = ["GET", "POST"])
 def home():
 	return render_template("home.html", step_1 = "active", next_button_text = "Upload")
 
@@ -32,8 +32,8 @@ def save_video():
 
 
 @app.route('/progress_split_frames')
-def progress():
-	def generate():
+def progress_split_frames():
+	def generate_split_frames():
 		x = 0
 		
 		while x <= 100:
@@ -43,6 +43,29 @@ def progress():
 
 	return Response(generate(), mimetype = "text/event-stream")
 
+@app.route('/progress_process_frames')
+def progress_process_frames():
+	def generate_process_frames():
+		x = 0
+		
+		while x <= 100:
+			yield "data:" + str(x) + "\n\n"
+			x = x + 1
+			time.sleep(0.01)
+
+	return Response(generate(), mimetype = "text/event-stream")
+
+@app.route('/progress_merge_frames')
+def progress_merge_frames():
+	def generate_merge_frames():
+		x = 0
+		
+		while x <= 100:
+			yield "data:" + str(x) + "\n\n"
+			x = x + 1
+			time.sleep(0.01)
+
+	return Response(generate(), mimetype = "text/event-stream")
 
 if __name__ == '__main__':
     app.run(debug = True)
