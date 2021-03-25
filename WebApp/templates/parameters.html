@@ -34,13 +34,28 @@
 
 			<p>Choose the parameters to be applied to the video below.</p>
 
-			<!-- <div class="progress">
-				<div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
-					<span class="progress-bar-label">0%</span>
-				</div>
-			</div>
 
-			<br> -->
+			<table style="width: 100%; height: 50%;">
+				<tr>
+					<td>Damping Factor: </td>
+					<td>
+			  			<input type="range" min="1" max="100" value="50">
+					</td>
+				</tr>
+				<tr>
+					<td>Brightness Level: </td>
+					<td>
+			  			<input type="range" min="1" max="100" value="50">
+					</td>
+				</tr>
+				<tr>
+					<td>Contrast level: </td>
+					<td>
+			  			<input type="range" min="1" max="100" value="50">
+					</td>
+				</tr>
+			</table>
+
 
 			<button type="button" class="btn btn-danger" id="backButton" onclick="window.location.href='{{url_for('home')}}';"> ᐸ Upload a different video</button>
 			<button type="button" class="btn btn-info" id="nextButton" onclick="window.location.href='{{url_for('process_frames')}}';">{{next_button_text}} ᐳ</button>
@@ -98,6 +113,9 @@
 				position: absolute;
 				left: 20px;
 				bottom: 20px;
+			}
+			td{
+				font-weight: bold;
 			}
 			/* ProgressList Tracker v2 */
 			ol.progressList[data-steps="2"] li { width: 49%; }
