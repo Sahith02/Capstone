@@ -35,30 +35,41 @@
 			<p>Choose the parameters to be applied to the video below.</p>
 
 
-			<table style="width: 100%; height: 50%;">
-				<tr>
-					<td>Damping Factor: </td>
-					<td>
-			  			<input type="range" min="1" max="100" value="50">
-					</td>
-				</tr>
-				<tr>
-					<td>Brightness Level: </td>
-					<td>
-			  			<input type="range" min="1" max="100" value="50">
-					</td>
-				</tr>
-				<tr>
-					<td>Contrast level: </td>
-					<td>
-			  			<input type="range" min="1" max="100" value="50">
-					</td>
-				</tr>
-			</table>
+			<form
+				method = "post" 
+				action = "{{url_for('parameters')}}" 
+				enctype = "multipart/form-data" 
+				style = "height: 100%;"
+				onSubmit = "document.getElementById('nextButton').disabled=true;"
+			>
+				<table style="width: 100%; height: 50%;">
+					<tr>
+						<td>Damping Factor: </td>
+						<td>
+							<input type="range" name="damping_factor" min="1" max="100" value="50" oninput="this.nextElementSibling.value = this.value">
+							<output>50</output>
+						</td>
+					</tr>
+					<tr>
+						<td>Brightness Level: </td>
+						<td>
+							<input type="range" name="brightness_factor" min="-2" max="2" value="0" oninput="this.nextElementSibling.value = this.value">
+							<output>0</output>
+						</td>
+					</tr>
+					<tr>
+						<td>Contrast level: </td>
+						<td>
+							<input type="range" name="contrast_factor" min="-2" max="2" value="0" oninput="this.nextElementSibling.value = this.value">
+							<output>0</output>
+						</td>
+					</tr>
+				</table>
 
 
-			<button type="button" class="btn btn-danger" id="backButton" onclick="window.location.href='{{url_for('home')}}';"> ᐸ Upload a different video</button>
-			<button type="button" class="btn btn-info" id="nextButton" onclick="window.location.href='{{url_for('process_frames')}}';">{{next_button_text}} ᐳ</button>
+				<button type="button" class="btn btn-danger" id="backButton" onclick="window.location.href='{{url_for('home')}}';"> ᐸ Upload a different video</button>
+				<button type="submit" class="btn btn-info" id="nextButton" onclick="window.location.href='{{url_for('process_frames')}}';">{{next_button_text}} ᐳ</button>
+			</form>
 		</div>
 
 

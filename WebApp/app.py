@@ -8,6 +8,11 @@ UPLOAD_FOLDER = "./temp"
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
+# global variables
+damping_factor = 50
+brightness_factor = 0
+contrast_factor = 0
+
 
 @app.route('/', methods = ["GET", "POST"])
 def home():
@@ -23,8 +28,15 @@ def split_frames():
 	print("Splitting the frames")
 	return render_template("split_frames.html", step_2 = "active", next_button_text = "Choose parameters")
 
-@app.route('/parameters')
+@app.route('/parameters', methods = ["GET", "POST"])
 def parameters():
+	if(request.method == "POST"):
+		global damping_factor, brightness_factor, contrast_factor
+		damping_factor = request.form["damping_factor"]
+		brightness_factor = request.form['brightness_factor']
+		contrast_factor = request.form['contrast_factor']
+		return redirect(url_for("process_frames"))
+	# print("Factors are: {0}, {1}, {2}".format(damping_factor, brightness_factor, contrast_factor))
 	return render_template("parameters.html", step_3 = "active", next_button_text = "Process frames")
 
 @app.route('/process_frames')
@@ -68,7 +80,7 @@ def progress_split_frames():
 				cv2.imwrite("./temp/unprocessed_frames/temp_frame_{0}.jpg".format(count), image)
 			yield "data:" + str('%.1f' % (round(count/total_num_frames, 3) * 100)) + "\n\n"
 			count += 1
-			print("Done with " + str(count) + " frames.")
+			# print("Done with " + str(count) + " frames.")
 			# time.sleep(0.05)
 
 	return Response(generate_split_frames(), mimetype = "text/event-stream")
