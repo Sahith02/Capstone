@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, redirect, request, jsonify, Response
+from flask import Flask, render_template, url_for, redirect, request, jsonify, Response, send_file
 from werkzeug.utils import secure_filename
 from PIL import Image, ImageEnhance
 import time
@@ -48,21 +48,13 @@ def process_frames():
 def merge_frames():
 	return render_template("merge_frames.html", step_5 = "active", next_button_text = "Finish and Save")
 
-@app.route('/save_video')
+@app.route('/save_video', methods = ["GET", "POST"])
 def save_video():
+	if(request.method == "POST"):
+		return send_file("./output/colorized_output_video.mp4", as_attachment = True)
 	return render_template("save_video.html", step_5 = "active", next_button_text = "Save Video")
 
 
-
-def FrameCapture(path):
-	vidObj = cv2.VideoCapture(path) 
-	count = 0
-	success = 1
-
-	while success:
-		success, image = vidObj.read() 
-		cv2.imwrite("frame%d.jpg" % count, image) 
-		count += 1
 
 @app.route('/progress_split_frames')
 def progress_split_frames():
@@ -81,8 +73,6 @@ def progress_split_frames():
 				cv2.imwrite("./temp/unprocessed_frames/temp_frame_{0}.jpg".format(count), image)
 			yield "data:" + str('%.1f' % (round(count/total_num_frames, 3) * 100)) + "\n\n"
 			count += 1
-			# print("Done with " + str(count) + " frames.")
-			# time.sleep(0.05)
 
 	return Response(generate_split_frames(), mimetype = "text/event-stream")
 
@@ -111,8 +101,6 @@ def progress_process_frames():
 
 			count += 1
 			yield "data:" + str('%.1f' % (round(count/total_num_frames, 3) * 100)) + "\n\n"
-			# print(file_name)
-			# time.sleep(0.01)
 
 	return Response(generate_process_frames(), mimetype = "text/event-stream")
 
@@ -120,12 +108,24 @@ def progress_process_frames():
 @app.route('/progress_merge_frames')
 def progress_merge_frames():
 	def generate_merge_frames():
-		x = 0
+		count = 0
+		all_files = sorted(os.listdir("./temp/processed_frames"), key = lambda x: (len (x), x))
+		all_files.remove("temp")
+		total_num_frames = len(all_files)
+
+		frame = cv2.imread(os.path.join("./temp/processed_frames", all_files[0]))
+		height, width, layers = frame.shape
+
+		fourcc = cv2.VideoWriter_fourcc('m','p','4','v')
+		video = cv2.VideoWriter("./output/colorized_output_video.mp4", fourcc, 30, (width, height))
 		
-		while x <= 100:
-			yield "data:" + str(x) + "\n\n"
-			x = x + 1
-			time.sleep(0.01)
+		for file_name in all_files:
+			video.write(cv2.imread(os.path.join("./temp/processed_frames", file_name)))
+			count += 1
+			yield "data:" + str('%.1f' % (round(count/total_num_frames, 3) * 100)) + "\n\n"
+
+		cv2.destroyAllWindows() 
+		video.release()
 
 	return Response(generate_merge_frames(), mimetype = "text/event-stream")
 

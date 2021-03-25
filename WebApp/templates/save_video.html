@@ -44,28 +44,19 @@
 
 			<hr>
 
-			<button type="button" class="btn btn-danger" id="backButton" onclick="window.location.href='{{url_for('home')}}';"> ᐸ Upload a different video</button>
+			<form
+				method = "post" 
+				action = "{{url_for('save_video')}}" 
+				enctype = "multipart/form-data" 
+				style = "height: 100%;"
+			>
+				<button type="button" class="btn btn-danger" id="backButton" onclick="window.location.href='{{url_for('home')}}';"> ᐸ Upload a different video</button>
 
-			<label class="custom-file-upload">
-				<input type="button" style="display: none;" />
-				<i class="fa fa-floppy-o"></i> Save Video
-			</label>
-
-			<!-- <div class="progress">
-				<div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
-					<span class="progress-bar-label">0%</span>
-				</div>
-			</div>
-
-			<br> -->
-
-			<!-- <button
-				type="button"
-				class="btn btn-info"
-				id="nextButton"
-				onclick="window.location.href='{{url_for('save_video')}}';"
-			>{{next_button_text}} ᐳ</button>
-		</div> -->
+				<label class="custom-file-upload">
+					<input type="submit" style="display: none;" />
+					<i class="fa fa-floppy-o"></i> Save Video
+				</label>
+			</form>
 
 
 		<style type="text/css">
