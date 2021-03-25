@@ -39,9 +39,9 @@ def progress_split_frames():
 		while x <= 100:
 			yield "data:" + str(x) + "\n\n"
 			x = x + 1
-			time.sleep(0.01)
+			time.sleep(0.05)
 
-	return Response(generate(), mimetype = "text/event-stream")
+	return Response(generate_split_frames(), mimetype = "text/event-stream")
 
 @app.route('/progress_process_frames')
 def progress_process_frames():
@@ -53,7 +53,7 @@ def progress_process_frames():
 			x = x + 1
 			time.sleep(0.01)
 
-	return Response(generate(), mimetype = "text/event-stream")
+	return Response(generate_process_frames(), mimetype = "text/event-stream")
 
 @app.route('/progress_merge_frames')
 def progress_merge_frames():
@@ -65,7 +65,7 @@ def progress_merge_frames():
 			x = x + 1
 			time.sleep(0.01)
 
-	return Response(generate(), mimetype = "text/event-stream")
+	return Response(generate_merge_frames(), mimetype = "text/event-stream")
 
 if __name__ == '__main__':
     app.run(debug = True)
