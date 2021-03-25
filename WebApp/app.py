@@ -1,5 +1,6 @@
 from flask import Flask, render_template, url_for, redirect, request, jsonify, Response
 from werkzeug.utils import secure_filename
+from PIL import Image, ImageEnhance
 import time
 import os
 import cv2
@@ -32,9 +33,9 @@ def split_frames():
 def parameters():
 	if(request.method == "POST"):
 		global damping_factor, brightness_factor, contrast_factor
-		damping_factor = request.form["damping_factor"]
-		brightness_factor = request.form['brightness_factor']
-		contrast_factor = request.form['contrast_factor']
+		damping_factor = float(request.form["damping_factor"])
+		brightness_factor = float(request.form['brightness_factor'])
+		contrast_factor = float(request.form['contrast_factor'])
 		return redirect(url_for("process_frames"))
 	# print("Factors are: {0}, {1}, {2}".format(damping_factor, brightness_factor, contrast_factor))
 	return render_template("parameters.html", step_3 = "active", next_button_text = "Process frames")
@@ -85,17 +86,36 @@ def progress_split_frames():
 
 	return Response(generate_split_frames(), mimetype = "text/event-stream")
 
+
 @app.route('/progress_process_frames')
 def progress_process_frames():
 	def generate_process_frames():
-		x = 0
+		count = 0
+		all_files = sorted(os.listdir("./temp/unprocessed_frames"), key = lambda x: (len (x), x))
+		all_files.remove("temp")
+		total_num_frames = len(all_files)
 		
-		while x <= 100:
-			yield "data:" + str(x) + "\n\n"
-			x = x + 1
-			time.sleep(0.01)
+		for file_name in all_files:
+			
+			im = Image.open("./temp/unprocessed_frames/{0}".format(file_name))
+			
+			# Applying brightness factor
+			enhancer_b = ImageEnhance.Brightness(im)
+			im_output_b = enhancer_b.enhance(brightness_factor)
+
+			#Applying contrast factor
+			enhancer_c = ImageEnhance.Contrast(im_output_b)
+			im_output_bc = enhancer_c.enhance(contrast_factor)
+
+			im_output_bc.save("./temp/processed_frames/temp_frame_{}.jpg".format(count))
+
+			count += 1
+			yield "data:" + str('%.1f' % (round(count/total_num_frames, 3) * 100)) + "\n\n"
+			# print(file_name)
+			# time.sleep(0.01)
 
 	return Response(generate_process_frames(), mimetype = "text/event-stream")
+
 
 @app.route('/progress_merge_frames')
 def progress_merge_frames():
