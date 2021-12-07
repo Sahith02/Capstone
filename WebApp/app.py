@@ -2,6 +2,7 @@ from flask import Flask, render_template, url_for, redirect, request, jsonify, R
 from werkzeug.utils import secure_filename
 from model1pt.src.visualize import get_artistic_image_colorizer
 from PIL import Image, ImageEnhance
+import numpy as np
 import time
 import os
 import cv2
@@ -15,12 +16,30 @@ damping_factor = 50
 brightness_factor = 0
 contrast_factor = 0
 RENDER_FACTOR = 15
+PIXEL_TOLERANCE = 50
+DAMPING_FACTOR = 0.7
 
 
 def apply_color(file_name):
 	colorizer = get_artistic_image_colorizer()
 	return colorizer.get_transformed_image("./temp/unprocessed_frames/{0}".format(file_name), render_factor = RENDER_FACTOR)
 
+def arePixelsClose(pixel1, pixel2, tolerance):
+    if(max(map(lambda x, y : abs(int(x) - int(y)), pixel1, pixel2)) < tolerance):
+        return True
+    else:
+        return False
+
+def applyDampingFactor(prevImage, currImage):
+#     return np.uint8((prevImg * DAMPING_FACTOR) + (currImg * (1 - DAMPING_FACTOR)))
+    newImage = np.array(currImage)
+    tolerance = PIXEL_TOLERANCE
+    for i in range(newImage.shape[0]):
+        for j in range(newImage.shape[1]):
+            if(arePixelsClose(prevImage[i][j], newImage[i][j], tolerance)):
+                newImage[i][j] = np.uint8((prevImage[i][j] * DAMPING_FACTOR) + (currImage[i][j] * (1 - DAMPING_FACTOR)))
+    
+    return newImage
 
 
 @app.route('/', methods = ["GET", "POST"])
@@ -100,6 +119,14 @@ def progress_process_frames():
 			#Applying colorization 
 			im = apply_color(file_name)
 
+			#Apply damping factor
+			if count!=0:
+				curIm=np.array(im)
+				prevIm=Image.open("./temp/processed_frames/temp_frame_{}.jpg".format(count-1))
+				prevIm=np.array(prevIm)
+				curIm=applyDampingFactor(prevIm,curIm)
+				im=Image.fromarray(curIm.astype('uint8'), 'RGB')
+
 			# Applying brightness factor
 			enhancer_b = ImageEnhance.Brightness(im)
 			im_output_b = enhancer_b.enhance(brightness_factor)
@@ -112,6 +139,7 @@ def progress_process_frames():
 
 			count += 1
 			yield "data:" + str('%.1f' % (round(count/total_num_frames, 3) * 100)) + "\n\n"
+			# print("Finished image - ",count)
 
 	return Response(generate_process_frames(), mimetype = "text/event-stream")
 
