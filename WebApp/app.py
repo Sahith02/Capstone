@@ -1,5 +1,6 @@
 from flask import Flask, render_template, url_for, redirect, request, jsonify, Response, send_file
 from werkzeug.utils import secure_filename
+from model1pt.src.visualize import get_artistic_image_colorizer
 from PIL import Image, ImageEnhance
 import time
 import os
@@ -13,6 +14,13 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 damping_factor = 50
 brightness_factor = 0
 contrast_factor = 0
+RENDER_FACTOR = 15
+
+
+def apply_color(file_name):
+	colorizer = get_artistic_image_colorizer()
+	return colorizer.get_transformed_image("./temp/unprocessed_frames/{0}".format(file_name), render_factor = RENDER_FACTOR)
+
 
 
 @app.route('/', methods = ["GET", "POST"])
@@ -88,7 +96,10 @@ def progress_process_frames():
 		for file_name in all_files:
 			
 			im = Image.open("./temp/unprocessed_frames/{0}".format(file_name))
-			
+
+			#Applying colorization 
+			im = apply_color(file_name)
+
 			# Applying brightness factor
 			enhancer_b = ImageEnhance.Brightness(im)
 			im_output_b = enhancer_b.enhance(brightness_factor)
